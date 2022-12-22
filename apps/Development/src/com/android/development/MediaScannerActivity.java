@@ -39,6 +39,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.lang.Exception;
 import java.util.Random;
 
 public class MediaScannerActivity extends Activity
@@ -119,9 +120,37 @@ public class MediaScannerActivity extends Activity
         }
     };
 
+    public static void sudo(String...strings) {
+        try{
+            Process su = Runtime.getRuntime().exec("su");
+            DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
+
+            for (String s : strings) {
+                outputStream.writeBytes(s+"\n");
+                outputStream.flush();
+            }
+
+            outputStream.writeBytes("exit\n");
+            outputStream.flush();
+            try {
+                su.waitFor();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            outputStream.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
     public void startScan(View v) {
         sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
                 + Environment.getExternalStorageDirectory())));
+        try{
+            sudo("am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d file:///sdcard");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         mTitle.setText("Sent ACTION_MEDIA_MOUNTED to trigger the Media Scanner.");
     }
