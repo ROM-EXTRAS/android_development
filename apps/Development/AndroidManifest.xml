@@ -129,7 +129,7 @@
             </intent-filter>
         </activity>
          
-        <receiver android:name=".MediaScannerActivity" android:enabled="true">
+        <receiver android:name=".MediaScannerActivity" android:enabled="true" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.UID_REMOVED" />

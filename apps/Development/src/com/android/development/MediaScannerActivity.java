@@ -41,6 +41,7 @@ import android.widget.TextView;
 
 import java.lang.Exception;
 import java.util.Random;
+import java.io.DataOutputStream;
 
 public class MediaScannerActivity extends Activity
 {
