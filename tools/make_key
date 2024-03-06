@@ -46,8 +46,13 @@ mknod ${one} p
 mknod ${two} p
 chmod 0600 ${one} ${two}
 
+if [ "x${MAKEKEY_NOPASS}" == "xtrue" ]; then
+	echo "setting blank password."
+	password="";
+else
 read -p "Enter password for '$1' (blank for none; password will be visible): " \
   password
+fi
 
 if [ "${3}" = "rsa" -o "$#" -eq 2 ]; then
   ( openssl genrsa -f4 2048 | tee ${one} > ${two} ) &
